@@ -1,0 +1,25 @@
+# Compiled Binaries and Object Files
+*.o
+*.obj
+*.out
+*.exe
+calculator
+Basic-Calculator-CPP
+
+# Build and Debug Directories
+bin/
+build/
+obj/
+*.dSYM/
+
+# IDE and Editor Specific Files
+.vscode/
+.idea/
+*.suo
+*.user
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
