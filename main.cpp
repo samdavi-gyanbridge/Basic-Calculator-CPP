@@ -31,7 +31,10 @@ int main() {
         // 3. Ask the user to select an operation
         char operation;
         std::cout << "Enter your choice (1-4 or +, -, *, /): ";
-        std::cin >> operation;
+        if (!(std::cin >> operation)) {
+            // EOF or input closed
+            break;
+        }
         clearInputBuffer();
 
         // 7. Handle invalid menu selections using if-else statements (switch-free)
@@ -75,14 +78,20 @@ int main() {
 
         // 9. Ask whether the user wants another calculation
         std::cout << "\nWould you like to perform another calculation? (y/n): ";
-        std::cin >> continueChoice;
+        continueChoice = 'n';
+        if (!(std::cin >> continueChoice)) {
+            break;
+        }
         clearInputBuffer();
 
         // Validate continuation choice (must be 'y', 'Y', 'n', or 'N')
         while (continueChoice != 'y' && continueChoice != 'Y' &&
                continueChoice != 'n' && continueChoice != 'N') {
             std::cout << "Invalid input. Please enter 'y' to continue or 'n' to quit: ";
-            std::cin >> continueChoice;
+            if (!(std::cin >> continueChoice)) {
+                continueChoice = 'n';
+                break;
+            }
             clearInputBuffer();
         }
 
@@ -174,8 +183,9 @@ void displayMenu() {
  * Clears any remaining characters in standard input buffer up to newline.
  */
 void clearInputBuffer() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    if (std::cin.good()) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
 }
 
 /**
@@ -192,6 +202,9 @@ double getValidNumber(const std::string& prompt) {
             clearInputBuffer();
             return number;
         } else {
+            if (std::cin.eof()) {
+                return 0.0;
+            }
             std::cout << "  [!] Invalid numerical input. Please enter a valid number.\n";
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
